@@ -1,0 +1,14 @@
+# AWS Configuration
+aws_region = "us-east-1"
+
+# VPC Configuration
+requester_vpc_id = "vpc-12345678"  # Replace with your requester VPC ID
+accepter_vpc_id  = "vpc-87654321"  # Replace with your accepter VPC ID
+
+# Route Table Configuration
+requester_route_table_ids = ["rtb-12345678"]  # Replace with your requester route table IDs
+accepter_route_table_ids  = ["rtb-87654321"]  # Replace with your accepter route table IDs
+
+# CIDR Configuration
+requester_destination_cidrs = ["10.2.0.0/16"]  # CIDR blocks to route TO (accepter VPC CIDRs)
+accepter_destination_cidrs  = ["10.1.0.0/16"]  # CIDR blocks to route TO (requester VPC CIDRs)
