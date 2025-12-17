@@ -26,23 +26,13 @@ output "peering_connections" {
   }
 }
 
-output "requester_vpc_ids" {
-  description = "Map of peering connection names to requester VPC IDs"
-  value = {
-    for key, connection in aws_vpc_peering_connection.this : key => connection.vpc_id
-  }
+# Simple outputs for single connection
+output "connection_id" {
+  description = "VPC peering connection ID"
+  value       = length(aws_vpc_peering_connection.this) > 0 ? values(aws_vpc_peering_connection.this)[0].id : ""
 }
 
-output "accepter_vpc_ids" {
-  description = "Map of peering connection names to accepter VPC IDs"
-  value = {
-    for key, connection in aws_vpc_peering_connection.this : key => connection.peer_vpc_id
-  }
-}
-
-output "peer_owner_ids" {
-  description = "Map of peering connection names to peer owner IDs"
-  value = {
-    for key, connection in aws_vpc_peering_connection.this : key => connection.peer_owner_id
-  }
+output "accept_status" {
+  description = "The status of the VPC peering connection request"
+  value       = length(aws_vpc_peering_connection.this) > 0 ? values(aws_vpc_peering_connection.this)[0].accept_status : ""
 }

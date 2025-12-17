@@ -1,4 +1,4 @@
-variable "peering_connections" {
+variable "connections" {
   description = "Map of VPC peering connections to create"
   type = map(object({
     requester_vpc_id = string
@@ -23,14 +23,89 @@ variable "peering_connections" {
   default = {}
 }
 
+# Simple variables for single connection
+variable "requester_vpc_id" {
+  description = "Requester VPC ID"
+  type        = string
+  default     = ""
+}
+
+variable "accepter_vpc_id" {
+  description = "Accepter VPC ID"
+  type        = string
+  default     = ""
+}
+
+variable "requester_region" {
+  description = "Requester AWS region"
+  type        = string
+  default     = ""
+}
+
+variable "accepter_region" {
+  description = "Accepter AWS region"
+  type        = string
+  default     = ""
+}
+
+variable "accepter_aws_assume_role_arn" {
+  description = "Accepter AWS assume role ARN"
+  type        = string
+  default     = ""
+}
+
+variable "accepter_enabled" {
+  description = "Flag to enable/disable accepter side"
+  type        = bool
+  default     = true
+}
+
+# DNS Resolution
+variable "dns_resolution" {
+  description = "DNS resolution configuration"
+  type = object({
+    requester_allow_remote_vpc_dns_resolution = optional(bool, true)
+    accepter_allow_remote_vpc_dns_resolution  = optional(bool, true)
+    enable_dns_resolution                     = optional(bool, false)
+  })
+  default = {}
+}
+
+# Timeouts
+variable "timeouts" {
+  description = "VPC peering connection timeouts"
+  type = object({
+    create = optional(string, "3m")
+    update = optional(string, "3m")
+    delete = optional(string, "5m")
+  })
+  default = {}
+}
+
+
+# Naming
+variable "naming" {
+  description = "Naming configuration for resources"
+  type = object({
+    name        = optional(string, "")
+    namespace   = optional(string, "")
+    environment = optional(string, "")
+    stage       = optional(string, "")
+    delimiter   = optional(string, "-")
+    attributes  = optional(list(string), [])
+    label_order = optional(list(string), ["namespace", "environment", "stage", "name", "attributes"])
+  })
+  default = {}
+}
+
+# Global settings
 variable "tags" {
   description = "Default tags to apply to all resources"
   type        = map(string)
   default     = {}
 }
-
-variable "enable_dns_resolution" {
-  description = "Enable DNS resolution for all peering connections by default"
+variable "manage_routes" {
+  description = "Enable route management for peering connections"
   type        = bool
   default     = false
 }

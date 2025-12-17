@@ -1,9 +1,9 @@
-output "peering_connection_id" {
-  description = "The ID of the VPC peering connection"
-  value       = module.vpc_peering.peering_connection_ids["us-east-to-eu-west"]
+output "connection_id" {
+  description = "VPC peering connection ID"
+  value       = module.vpc_peering.connection_id
 }
 
-output "peering_status" {
-  description = "The status of the VPC peering connection"
-  value       = module.vpc_peering.peering_connection_status["us-east-to-eu-west"]
+output "accept_status" {
+  description = "The status of the VPC peering connection request"
+  value       = module.vpc_peering.accept_status
 }
