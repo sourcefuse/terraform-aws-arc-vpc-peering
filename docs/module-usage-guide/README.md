@@ -74,7 +74,7 @@ Ensure that the AWS credentials used to execute Terraform have the necessary per
 
 ### Input Variables
 
-For a complete list of input variables, see the README [Inputs](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/README.md#inputs) section.
+For a complete list of input variables, see the README [Inputs](../../README.md#inputs) section.
 
 Key variables include:
 - `peering_connections`: Map of VPC peering connections to create
@@ -85,7 +85,7 @@ Key variables include:
 
 ### Output Values
 
-For a complete list of outputs, see the README [Outputs](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/README.md#outputs) section.
+For a complete list of outputs, see the README [Outputs](../../README.md#outputs) section.
 
 Key outputs include:
 - `peering_connection_ids`: Map of peering connection names to their IDs
@@ -96,7 +96,7 @@ Key outputs include:
 
 ### Basic Usage
 
-For basic usage, see the [single-account example](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/examples/single-account) folder.
+For basic usage, see the [single-account example](../../examples/single-account) folder.
 
 This example will create:
 
@@ -113,12 +113,12 @@ See the [cross-account example](https://github.com/sourcefuse/terraform-aws-arc-
 - Proper security configurations
 
 #### Cross-Region Peering
-See the [cross-region example](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/examples/cross-region) for:
+See the [cross-region example](../../examples/cross-region) for:
 - Cross-region VPC connectivity
 - Regional considerations and limitations
 
 #### Full-Featured Peering
-See the [with-routes-dns example](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/examples/with-routes-dns) for:
+See the [with-routes-dns example](../../examples/with-routes-dns) for:
 - Automatic route table management
 - DNS resolution configuration
 - Complete connectivity setup
@@ -170,7 +170,7 @@ Follow best practices to ensure secure VPC Peering configurations:
 
 ### Contributing Guidelines
 
-Contribute to the module by following the guidelines outlined in the [CONTRIBUTING.md](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/CONTRIBUTING.md) file.
+Contribute to the module by following the guidelines outlined in the [CONTRIBUTING.md](../../CONTRIBUTING.md) file.
 
 ### Reporting Bugs and Issues
 
@@ -180,7 +180,7 @@ If you find a bug or issue, report it on the [GitHub repository](https://github.
 
 ### License Information
 
-This module is licensed under the Apache 2.0 license. Refer to the [LICENSE](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/LICENSE) file for more details.
+This module is licensed under the Apache 2.0 license. Refer to the [LICENSE](../../LICENSE) file for more details.
 
 ### Open Source Contribution
 
