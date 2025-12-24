@@ -21,7 +21,7 @@ jobs:
           destination_folder: 'docs/arc-iac-docs/modules/terraform-aws-arc-vpc-peering'
           user_email: 'github-actions@github.com'
           user_name: ${{ github.actor }}
-          commit_message: ${{ github.event.head_commit.message }}
+          commit_message: "docs: update from terraform-aws-arc-vpc-peering"
       - name: Pushes Module Usage Guide
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
@@ -33,7 +33,7 @@ jobs:
           destination_folder: 'docs/arc-iac-docs/modules/terraform-aws-arc-vpc-peering/docs/module-usage-guide'
           user_email: 'github-actions@github.com'
           user_name: ${{ github.actor }}
-          commit_message: ${{ github.event.head_commit.message }}
+          commit_message: "docs: update from terraform-aws-arc-vpc-peering"
       - name: Pushes to another repository
         uses: cpina/github-action-push-to-another-repository@main
         env:
@@ -47,4 +47,4 @@ jobs:
           user-email: 'github-actions@github.com'
           user-name: ${{ github.actor }}
           target-branch: main
-          commit-message: ${{ github.event.head_commit.message }}
+          commit-message: "docs: update from terraform-aws-arc-vpc-peering"
