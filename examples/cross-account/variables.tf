@@ -15,3 +15,4 @@ variable "accepter_aws_assume_role_arn" {
   type        = string
   default     = "arn:aws:iam::123456789012:role/CrossAccountRole"
 }
+
