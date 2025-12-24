@@ -42,16 +42,13 @@ module "vpc_peering" {
     aws.accepter = aws.accepter
   }
 
-  requester_vpc_id = var.requester_vpc_id
-  accepter_vpc_id  = var.accepter_vpc_id
-  requester_region = "us-east-1"
-  accepter_region  = "us-east-1"
-
-  accepter_aws_assume_role_arn = var.accepter_aws_assume_role_arn
-
-  dns_resolution = {
-    requester_allow_remote_vpc_dns_resolution = true
-    accepter_allow_remote_vpc_dns_resolution  = true
+  connections = {
+    "main" = {
+      requester_vpc_id                = var.requester_vpc_id
+      accepter_vpc_id                 = var.accepter_vpc_id
+      peer_owner_id                   = "630470746897"
+      allow_remote_vpc_dns_resolution = true
+    }
   }
 
   tags = module.tags.tags

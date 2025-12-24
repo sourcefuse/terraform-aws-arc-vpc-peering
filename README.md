@@ -1,4 +1,4 @@
-![Module Structure](./static/terraform-aws-arc-vpc-peering.png)
+![Module Structure](./static/vpc-peering.png)
 
 # [terraform-aws-arc-vpc-peering](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering)
 
@@ -242,17 +242,10 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_accepter_aws_assume_role_arn"></a> [accepter\_aws\_assume\_role\_arn](#input\_accepter\_aws\_assume\_role\_arn) | Accepter AWS assume role ARN | `string` | `""` | no |
-| <a name="input_accepter_enabled"></a> [accepter\_enabled](#input\_accepter\_enabled) | Flag to enable/disable accepter side | `bool` | `true` | no |
-| <a name="input_accepter_region"></a> [accepter\_region](#input\_accepter\_region) | Accepter AWS region | `string` | `""` | no |
-| <a name="input_accepter_vpc_id"></a> [accepter\_vpc\_id](#input\_accepter\_vpc\_id) | Accepter VPC ID | `string` | `""` | no |
 | <a name="input_auto_accept_peering"></a> [auto\_accept\_peering](#input\_auto\_accept\_peering) | Automatically accept peering connections (same account only) | `bool` | `true` | no |
 | <a name="input_connections"></a> [connections](#input\_connections) | Map of VPC peering connections to create | <pre>map(object({<br/>    requester_vpc_id = string<br/>    accepter_vpc_id  = string<br/>    peer_region      = optional(string)<br/>    peer_owner_id    = optional(string)<br/>    auto_accept      = optional(bool, true)<br/><br/>    # DNS settings<br/>    allow_remote_vpc_dns_resolution = optional(bool, false)<br/><br/>    # Route management<br/>    manage_routes               = optional(bool, false)<br/>    requester_route_table_ids   = optional(list(string), [])<br/>    accepter_route_table_ids    = optional(list(string), [])<br/>    requester_destination_cidrs = optional(list(string), [])<br/>    accepter_destination_cidrs  = optional(list(string), [])<br/><br/>    # Tags<br/>    tags = optional(map(string), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_dns_resolution"></a> [dns\_resolution](#input\_dns\_resolution) | DNS resolution configuration | <pre>object({<br/>    requester_allow_remote_vpc_dns_resolution = optional(bool, true)<br/>    accepter_allow_remote_vpc_dns_resolution  = optional(bool, true)<br/>    enable_dns_resolution                     = optional(bool, false)<br/>  })</pre> | `{}` | no |
-| <a name="input_manage_routes"></a> [manage\_routes](#input\_manage\_routes) | Enable route management for peering connections | `bool` | `false` | no |
 | <a name="input_naming"></a> [naming](#input\_naming) | Naming configuration for resources | <pre>object({<br/>    name        = optional(string, "")<br/>    namespace   = optional(string, "")<br/>    environment = optional(string, "")<br/>    stage       = optional(string, "")<br/>    delimiter   = optional(string, "-")<br/>    attributes  = optional(list(string), [])<br/>    label_order = optional(list(string), ["namespace", "environment", "stage", "name", "attributes"])<br/>  })</pre> | `{}` | no |
-| <a name="input_requester_region"></a> [requester\_region](#input\_requester\_region) | Requester AWS region | `string` | `""` | no |
-| <a name="input_requester_vpc_id"></a> [requester\_vpc\_id](#input\_requester\_vpc\_id) | Requester VPC ID | `string` | `""` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Default tags to apply to all resources | `map(string)` | `{}` | no |
 | <a name="input_timeouts"></a> [timeouts](#input\_timeouts) | VPC peering connection timeouts | <pre>object({<br/>    create = optional(string, "3m")<br/>    update = optional(string, "3m")<br/>    delete = optional(string, "5m")<br/>  })</pre> | `{}` | no |
 
@@ -260,8 +253,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_accept_status"></a> [accept\_status](#output\_accept\_status) | The status of the VPC peering connection request |
-| <a name="output_connection_id"></a> [connection\_id](#output\_connection\_id) | VPC peering connection ID |
 | <a name="output_peering_connection_ids"></a> [peering\_connection\_ids](#output\_peering\_connection\_ids) | Map of peering connection names to their IDs |
 | <a name="output_peering_connection_status"></a> [peering\_connection\_status](#output\_peering\_connection\_status) | Map of peering connection names to their status |
 | <a name="output_peering_connections"></a> [peering\_connections](#output\_peering\_connections) | Complete peering connection details |

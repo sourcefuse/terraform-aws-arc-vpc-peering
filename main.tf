@@ -10,7 +10,7 @@ terraform {
 
 locals {
   # Generate consistent naming
-  enabled = var.requester_vpc_id != "" && var.accepter_vpc_id != "" || length(var.connections) > 0
+  enabled = length(var.connections) > 0
 
   # Create ID for naming
   id = join(var.naming.delimiter, compact([
@@ -21,22 +21,8 @@ locals {
     join(var.naming.delimiter, var.naming.attributes)
   ]))
 
-  # Create single connection from simple variables if provided
-  single_connection = var.requester_vpc_id != "" && var.accepter_vpc_id != "" ? {
-    "main" = {
-      requester_vpc_id                = var.requester_vpc_id
-      accepter_vpc_id                 = var.accepter_vpc_id
-      peer_region                     = var.accepter_region != var.requester_region ? var.accepter_region : null
-      peer_owner_id                   = var.accepter_aws_assume_role_arn != "" ? split(":", var.accepter_aws_assume_role_arn)[4] : null
-      auto_accept                     = var.accepter_enabled
-      allow_remote_vpc_dns_resolution = var.dns_resolution.requester_allow_remote_vpc_dns_resolution
-      manage_routes                   = var.manage_routes
-      tags                            = {}
-    }
-  } : tomap({})
-
-  # Merge single connection with connections
-  all_connections = merge(local.single_connection, var.connections)
+  # Use connections directly
+  all_connections = var.connections
 
   # Determine connections that need accepter
   connections_needing_accepter = {
@@ -101,7 +87,7 @@ resource "aws_vpc_peering_connection_accepter" "this" {
 resource "aws_vpc_peering_connection_accepter" "cross_account" {
   for_each = local.enabled ? {
     for key, connection in local.connections_needing_accepter : key => connection
-    if connection.peer_owner_id != null && var.accepter_enabled
+    if connection.peer_owner_id != null
   } : {}
 
   provider = aws.accepter
@@ -148,7 +134,7 @@ resource "aws_vpc_peering_connection_options" "accepter" {
       connection.allow_remote_vpc_dns_resolution,
       var.dns_resolution.enable_dns_resolution,
       var.dns_resolution.accepter_allow_remote_vpc_dns_resolution
-    ) && var.accepter_enabled
+    )
   }
 
   provider = aws.accepter

@@ -37,30 +37,17 @@ module "vpc_peering" {
     aws.accepter = aws.accepter
   }
 
-  requester_vpc_id = var.requester_vpc_id
-  accepter_vpc_id  = var.accepter_vpc_id
-  requester_region = var.aws_region
-  accepter_region  = var.aws_region
-
-  dns_resolution = {
-    requester_allow_remote_vpc_dns_resolution = true
-    accepter_allow_remote_vpc_dns_resolution  = true
-  }
-
-  # Use advanced connections for route management
   connections = {
     "app-to-data" = {
-      requester_vpc_id = var.requester_vpc_id
-      accepter_vpc_id  = var.accepter_vpc_id
-      auto_accept      = true
-
+      requester_vpc_id                = var.requester_vpc_id
+      accepter_vpc_id                 = var.accepter_vpc_id
+      auto_accept                     = true
       allow_remote_vpc_dns_resolution = true
-
-      manage_routes               = true
-      requester_route_table_ids   = var.requester_route_table_ids
-      accepter_route_table_ids    = var.accepter_route_table_ids
-      requester_destination_cidrs = var.requester_destination_cidrs
-      accepter_destination_cidrs  = var.accepter_destination_cidrs
+      manage_routes                   = true
+      requester_route_table_ids       = var.requester_route_table_ids
+      accepter_route_table_ids        = var.accepter_route_table_ids
+      requester_destination_cidrs     = var.requester_destination_cidrs
+      accepter_destination_cidrs      = var.accepter_destination_cidrs
     }
   }
 

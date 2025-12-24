@@ -41,11 +41,10 @@ module "vpc_peering" {
 
   connections = {
     "main" = {
-      requester_vpc_id                          = "vpc-0e6c09980580ecbf6"
-      accepter_vpc_id                           = "vpc-098e55c8fafbdab0e"
-      peer_region                               = "us-east-2"
-      requester_allow_remote_vpc_dns_resolution = true
-      accepter_allow_remote_vpc_dns_resolution  = true
+      requester_vpc_id                = "vpc-0e6c09980580ecbf6"
+      accepter_vpc_id                 = "vpc-098e55c8fafbdab0e"
+      peer_region                     = "us-east-2"
+      allow_remote_vpc_dns_resolution = true
     }
   }
 

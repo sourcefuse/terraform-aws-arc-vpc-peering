@@ -39,10 +39,9 @@ module "vpc_peering" {
 
   connections = {
     "main" = {
-      requester_vpc_id                          = "vpc-0e6c09980580ecbf6"
-      accepter_vpc_id                           = "vpc-0c2174e558f2678c8"
-      requester_allow_remote_vpc_dns_resolution = false
-      accepter_allow_remote_vpc_dns_resolution  = false
+      requester_vpc_id                = "vpc-0e6c09980580ecbf6"
+      accepter_vpc_id                 = "vpc-0c2174e558f2678c8"
+      allow_remote_vpc_dns_resolution = false
     }
   }
 

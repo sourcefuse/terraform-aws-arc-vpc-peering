@@ -23,43 +23,6 @@ variable "connections" {
   default = {}
 }
 
-# Simple variables for single connection
-variable "requester_vpc_id" {
-  description = "Requester VPC ID"
-  type        = string
-  default     = ""
-}
-
-variable "accepter_vpc_id" {
-  description = "Accepter VPC ID"
-  type        = string
-  default     = ""
-}
-
-variable "requester_region" {
-  description = "Requester AWS region"
-  type        = string
-  default     = ""
-}
-
-variable "accepter_region" {
-  description = "Accepter AWS region"
-  type        = string
-  default     = ""
-}
-
-variable "accepter_aws_assume_role_arn" {
-  description = "Accepter AWS assume role ARN"
-  type        = string
-  default     = ""
-}
-
-variable "accepter_enabled" {
-  description = "Flag to enable/disable accepter side"
-  type        = bool
-  default     = true
-}
-
 # DNS Resolution
 variable "dns_resolution" {
   description = "DNS resolution configuration"
@@ -103,11 +66,6 @@ variable "tags" {
   description = "Default tags to apply to all resources"
   type        = map(string)
   default     = {}
-}
-variable "manage_routes" {
-  description = "Enable route management for peering connections"
-  type        = bool
-  default     = false
 }
 
 variable "auto_accept_peering" {

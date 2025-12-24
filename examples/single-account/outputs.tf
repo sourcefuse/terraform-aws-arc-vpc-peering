@@ -1,9 +1,9 @@
-output "connection_id" {
-  description = "VPC peering connection ID"
-  value       = module.vpc_peering.connection_id
+output "peering_connection_ids" {
+  description = "Map of peering connection names to their IDs"
+  value       = module.vpc_peering.peering_connection_ids
 }
 
-output "accept_status" {
-  description = "The status of the VPC peering connection request"
-  value       = module.vpc_peering.accept_status
+output "peering_connection_status" {
+  description = "Map of peering connection names to their status"
+  value       = module.vpc_peering.peering_connection_status
 }

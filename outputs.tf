@@ -25,14 +25,3 @@ output "peering_connections" {
     }
   }
 }
-
-# Simple outputs for single connection
-output "connection_id" {
-  description = "VPC peering connection ID"
-  value       = length(aws_vpc_peering_connection.this) > 0 ? values(aws_vpc_peering_connection.this)[0].id : ""
-}
-
-output "accept_status" {
-  description = "The status of the VPC peering connection request"
-  value       = length(aws_vpc_peering_connection.this) > 0 ? values(aws_vpc_peering_connection.this)[0].accept_status : ""
-}
