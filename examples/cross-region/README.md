@@ -1,42 +1,65 @@
 # Cross-Region VPC Peering Example
 
-This example demonstrates VPC peering between two different AWS regions.
+This example demonstrates VPC peering between two different AWS regions using existing VPCs.
 
-## What This Example Creates
+## Prerequisites
 
-- VPC in US East (N. Virginia): `10.1.0.0/16`
-- VPC in EU West (Ireland): `10.2.0.0/16`
-- Cross-region peering connection between them
+- Two existing VPCs in different AWS regions
+- AWS credentials configured with permissions in both regions
+
+## Configuration
+
+The example uses placeholder VPC IDs. Update them in `main.tf`:
+
+```hcl
+connections = {
+  "main" = {
+    requester_vpc_id                = "vpc-12345678"  # Replace with your US East VPC ID
+    accepter_vpc_id                 = "vpc-87654321"  # Replace with your US East 2 VPC ID
+    peer_region                     = "us-east-2"
+    allow_remote_vpc_dns_resolution = true
+  }
+}
+```
 
 ## Usage
 
-1. Ensure you have permissions in both regions
-2. Run:
+1. Update the VPC IDs with your existing VPCs in different regions
+2. Configure AWS credentials:
+   ```bash
+   aws configure
+   ```
+3. Run terraform:
+   ```bash
+   terraform init
+   terraform plan
+   terraform apply
+   ```
 
-```bash
-terraform init
-terraform plan
-terraform apply
-```
+## What This Example Creates
 
-## Configuration Details
+- Cross-region VPC peering connection
+- Automatic accepter in the target region
+- DNS resolution options for both sides
 
-- Requester: US East (us-east-1)
-- Accepter: EU West (eu-west-1)
-- Auto-accept enabled (same account)
+## Key Features Demonstrated
+
+- **Cross-Region Peering**: Connects VPCs across AWS regions
+- **Automatic Accepter**: Module handles accepter side automatically
+- **DNS Resolution**: Enables DNS resolution across regions
+- **Dual Provider**: Uses different AWS providers for each region
+
+## Outputs
+
+- `peering_connection_ids`: Map of peering connection names to their IDs
+- `peering_connection_status`: Map of peering connection names to their status
 
 ## Important Considerations
 
 - Cross-region peering incurs data transfer charges
-- DNS resolution works differently across regions
+- DNS resolution works across regions when enabled
 - Security group rules need to account for cross-region access
-
-## Outputs
-
-- `peering_connection_id`: The ID of the peering connection
-- `peering_status`: Status of the connection
-- `requester_vpc_cidr`: CIDR of the US East VPC
-- `accepter_vpc_cidr`: CIDR of the EU West VPC
+- Both regions must support VPC peering
 
 ## Clean Up
 

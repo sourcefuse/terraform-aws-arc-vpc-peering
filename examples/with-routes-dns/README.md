@@ -1,15 +1,31 @@
 # VPC Peering with Routes and DNS Example
 
-This example demonstrates a complete VPC peering setup with automatic route management and DNS resolution.
+This example demonstrates a complete VPC peering setup with automatic route management and DNS resolution using the connections map pattern.
 
 ## What This Example Creates
 
-- Application VPC: `10.1.0.0/16`
-- Data VPC: `10.2.0.0/16`
 - VPC peering connection with:
   - Automatic route creation
   - DNS resolution enabled
   - Route table management
+
+## Configuration
+
+Configure the peering connection using the connections map:
+
+```hcl
+connections = {
+  "app-to-data" = {
+    requester_vpc_id                = var.requester_vpc_id
+    accepter_vpc_id                 = var.accepter_vpc_id
+    requester_route_table_ids       = var.requester_route_table_ids
+    accepter_route_table_ids        = var.accepter_route_table_ids
+    requester_destination_cidrs     = var.requester_destination_cidrs
+    accepter_destination_cidrs      = var.accepter_destination_cidrs
+    allow_remote_vpc_dns_resolution = true
+  }
+}
+```
 
 ## Features Demonstrated
 
@@ -29,27 +45,34 @@ terraform apply
 
 The module automatically:
 1. Creates peering connection between VPCs
-2. Adds routes to private route tables
+2. Adds routes to specified route tables
 3. Enables DNS resolution for both VPCs
 4. Configures bidirectional connectivity
 
 ## Route Configuration
 
-- App VPC route table gets route to Data VPC CIDR
-- Data VPC route table gets route to App VPC CIDR
+- Routes are created in the specified route tables
 - Routes point to the peering connection
+- Supports multiple destination CIDRs per VPC
 
 ## DNS Resolution
 
-- Instances in App VPC can resolve DNS names in Data VPC
-- Instances in Data VPC can resolve DNS names in App VPC
+- Instances in requester VPC can resolve DNS names in accepter VPC
+- Instances in accepter VPC can resolve DNS names in requester VPC
 
 ## Outputs
 
-- `peering_connection_id`: Peering connection ID
-- `peering_status`: Connection status
-- `app_vpc_cidr`: Application VPC CIDR block
-- `data_vpc_cidr`: Data VPC CIDR block
+After successful deployment:
+
+```hcl
+peering_connection_ids = {
+  "app-to-data" = "pcx-1234567890abcdef0"
+}
+
+peering_connection_status = {
+  "app-to-data" = "active"
+}
+```
 
 ## Clean Up
 

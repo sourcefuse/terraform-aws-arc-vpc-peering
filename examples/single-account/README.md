@@ -1,6 +1,6 @@
 # Single Account VPC Peering Example
 
-This example demonstrates basic VPC peering within the same AWS account and region using existing VPCs.
+This example demonstrates basic VPC peering within the same AWS account and region.
 
 ## Prerequisites
 
@@ -9,14 +9,14 @@ This example demonstrates basic VPC peering within the same AWS account and regi
 
 ## Configuration
 
-Update the VPC IDs in `main.tf`:
+The example uses placeholder VPC IDs. Update them in `main.tf`:
 
 ```hcl
-peering_connections = {
-  "web-to-db" = {
-    requester_vpc_id = "vpc-xxxxxxxxx"  # Your first VPC ID
-    accepter_vpc_id  = "vpc-yyyyyyyyy"  # Your second VPC ID
-    auto_accept      = true
+connections = {
+  "main" = {
+    requester_vpc_id                = "vpc-12345678"  # Replace with your VPC ID
+    accepter_vpc_id                 = "vpc-87654321"  # Replace with your VPC ID
+    allow_remote_vpc_dns_resolution = false
   }
 }
 ```
@@ -49,8 +49,8 @@ peering_connections = {
 
 ## Outputs
 
-- `peering_connection_id`: The ID of the created peering connection
-- `peering_status`: The status of the peering connection (should be "active")
+- `peering_connection_ids`: Map of peering connection names to their IDs
+- `peering_connection_status`: Map of peering connection names to their status
 
 ## Clean Up
 

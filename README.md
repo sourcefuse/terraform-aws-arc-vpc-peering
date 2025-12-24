@@ -25,7 +25,7 @@ SourceFuse AWS Reference Architecture (ARC) Terraform module for managing AWS VP
 
 ## Usage Patterns
 
-### Simple Cross-Account Peering
+### Simple Same-Account Peering
 
 ```hcl
 module "vpc_peering" {
@@ -37,19 +37,19 @@ module "vpc_peering" {
 
   connections = {
     "main" = {
-      requester_vpc_id                          = "vpc-12345678"
-      accepter_vpc_id                           = "vpc-87654321"
-      accepter_aws_assume_role_arn              = "arn:aws:iam::123456789012:role/CrossAccountRole"
-      requester_allow_remote_vpc_dns_resolution = true
-      accepter_allow_remote_vpc_dns_resolution  = true
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      allow_remote_vpc_dns_resolution = true
     }
   }
 
   # Standard naming
-  namespace   = "eg"
-  environment = "prod"
-  stage       = "staging"
-  name        = "app"
+  naming = {
+    namespace   = "eg"
+    environment = "prod"
+    stage       = "staging"
+    name        = "app"
+  }
 
   tags = {
     Project = "MyProject"
@@ -57,7 +57,58 @@ module "vpc_peering" {
 }
 ```
 
-### Advanced Multi-Connection Pattern
+### Cross-Account Peering
+
+```hcl
+module "vpc_peering" {
+  source = "sourcefuse/arc-vpc-peering/aws"
+
+  providers = {
+    aws.accepter = aws.accepter
+  }
+
+  connections = {
+    "main" = {
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      peer_owner_id                   = "123456789012"
+      allow_remote_vpc_dns_resolution = true
+    }
+  }
+
+  tags = {
+    Environment = "production"
+  }
+}
+```
+
+### Cross-Region Peering
+
+```hcl
+module "vpc_peering" {
+  source = "sourcefuse/arc-vpc-peering/aws"
+
+  providers = {
+    aws          = aws.us_east
+    aws.accepter = aws.us_west
+  }
+
+  connections = {
+    "main" = {
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      peer_region                     = "us-west-2"
+      allow_remote_vpc_dns_resolution = true
+    }
+  }
+
+  tags = {
+    Environment = "production"
+  }
+}
+```
+
+### Advanced Multi-Connection with Route Management
 
 ```hcl
 module "vpc_peering" {
@@ -69,35 +120,38 @@ module "vpc_peering" {
 
   connections = {
     "web-to-app" = {
-      requester_vpc_id = "vpc-web123"
-      accepter_vpc_id  = "vpc-app456"
-      auto_accept      = true
-
-      manage_routes = true
-      requester_route_table_ids = ["rtb-web123"]
-      accepter_route_table_ids  = ["rtb-app456"]
-      requester_destination_cidrs = ["10.2.0.0/16"]
-      accepter_destination_cidrs  = ["10.1.0.0/16"]
-
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      auto_accept                     = true
       allow_remote_vpc_dns_resolution = true
+
+      manage_routes                   = true
+      requester_route_table_ids       = ["rtb-12345678"]
+      accepter_route_table_ids        = ["rtb-87654321"]
+      requester_destination_cidrs     = ["10.2.0.0/16"]
+      accepter_destination_cidrs      = ["10.1.0.0/16"]
     }
 
     "app-to-db" = {
-      requester_vpc_id = "vpc-app456"
-      accepter_vpc_id  = "vpc-db789"
-      peer_owner_id    = "123456789012"
-      auto_accept      = false
+      requester_vpc_id                = "vpc-87654321"
+      accepter_vpc_id                 = "vpc-abcdef12"
+      peer_owner_id                   = "123456789012"
+      auto_accept                     = false
+      allow_remote_vpc_dns_resolution = true
 
-      manage_routes = true
-      requester_route_table_ids = ["rtb-app456"]
-      accepter_route_table_ids  = ["rtb-db789"]
-      requester_destination_cidrs = ["10.3.0.0/16"]
-      accepter_destination_cidrs  = ["10.2.0.0/16"]
+      manage_routes                   = true
+      requester_route_table_ids       = ["rtb-87654321"]
+      accepter_route_table_ids        = ["rtb-abcdef12"]
+      requester_destination_cidrs     = ["10.3.0.0/16"]
+      accepter_destination_cidrs      = ["10.2.0.0/16"]
     }
   }
 
   tags = {
     Environment = "production"
+    Project     = "multi-tier-architecture"
+  }
+}
     Project     = "multi-tier-architecture"
   }
 }
@@ -155,17 +209,22 @@ The `examples/` directory contains complete, working examples:
 
 ## Migration Guide
 
-This module provides a simple interface for VPC peering across different scenarios:
+This module provides a clean, single interface for VPC peering across different scenarios using the `connections` map:
 
 ```hcl
 # Simple same-account peering
 module "vpc_peering" {
   source = "sourcefuse/arc-vpc-peering/aws"
 
+  providers = {
+    aws.accepter = aws.accepter
+  }
+
   connections = {
     "main" = {
-      requester_vpc_id = "vpc-12345678"
-      accepter_vpc_id  = "vpc-87654321"
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      allow_remote_vpc_dns_resolution = false
     }
   }
 
@@ -184,9 +243,33 @@ module "vpc_peering" {
 
   connections = {
     "main" = {
-      requester_vpc_id             = "vpc-12345678"
-      accepter_vpc_id              = "vpc-87654321"
-      accepter_aws_assume_role_arn = "arn:aws:iam::123456789012:role/CrossAccountRole"
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      peer_owner_id                   = "123456789012"
+      allow_remote_vpc_dns_resolution = true
+    }
+  }
+
+  tags = {
+    Environment = "production"
+  }
+}
+
+# Cross-region peering
+module "vpc_peering" {
+  source = "sourcefuse/arc-vpc-peering/aws"
+
+  providers = {
+    aws          = aws.us_east
+    aws.accepter = aws.us_west
+  }
+
+  connections = {
+    "main" = {
+      requester_vpc_id                = "vpc-12345678"
+      accepter_vpc_id                 = "vpc-87654321"
+      peer_region                     = "us-west-2"
+      allow_remote_vpc_dns_resolution = true
     }
   }
 
