@@ -112,7 +112,6 @@ module "vpc_peering" {
   }
 }
 ```
-
 ### Advanced Multi-Connection with Route Management
 
 ```hcl
