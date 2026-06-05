@@ -1,30 +1,37 @@
-![Module Structure](./static/vpc-peering.png)
+![Module Banner](./static/vpc-peering.png)
 
 # [terraform-aws-arc-vpc-peering](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering)
 
-<a href="https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/releases/latest"><img src="https://img.shields.io/github/release/sourcefuse/terraform-aws-arc-vpc-peering.svg?style=for-the-badge" alt="Latest Release"/></a> <a href="https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/commits"><img src="https://img.shields.io/github/last-commit/sourcefuse/terraform-aws-arc-vpc-peering.svg?style=for-the-badge" alt="Last Updated"/></a> ![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white) ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+> **Module:** `sourcefuse/arc-vpc-peering/aws`
+
+> **Registry:** [https://registry.terraform.io/modules/sourcefuse/arc-vpc-peering/aws](https://registry.terraform.io/modules/sourcefuse/arc-vpc-peering/aws)
+
+> **Category:** Networking / VPC
+
+> **Source:** [https://github.com/sourcefuse/terraform-aws-arc-vpc-peering](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering)
+
+[![Latest Release](https://img.shields.io/github/release/sourcefuse/terraform-aws-arc-vpc-peering.svg?style=for-the-badge)](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/releases/latest)
+[![Last Updated](https://img.shields.io/github/last-commit/sourcefuse/terraform-aws-arc-vpc-peering.svg?style=for-the-badge)](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/commits)
+![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
 [![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=sourcefuse_terraform-aws-arc-vpc-peering&token=6f397a571887a0cf7b2d8435f88fc1e6cc58d0c7)](https://sonarcloud.io/summary/new_code?id=sourcefuse_terraform-aws-arc-vpc-peering)
 
 ## Overview
 
-SourceFuse AWS Reference Architecture (ARC) Terraform module for managing AWS VPC Peering connections.
+Creates and manages VPC peering connections between two VPCs, including route table updates and DNS resolution settings.
 
-## Features
+## What It Does
 
-- **Single Module Design**: Handles both requester and accepter sides automatically
-- **Multi-Account Support**: Cross-account VPC peering with automatic accepter handling
-- **Multi-Region Support**: Cross-region VPC peering capabilities  
-- **Automatic Route Management**: Optional route table updates for seamless connectivity
-- **DNS Resolution**: Configurable DNS resolution across peered VPCs
-- **Flexible Configuration**: Both simple and advanced input patterns
-- **Production Ready**: Comprehensive validation, error handling, and best practices
-- **Security Best Practices**: Encryption, tagging, and protection settings
-- **High Availability**: Multi-AZ route table support
-- **Conditional Resources**: Smart resource creation based on configuration
+- VPC peering connection creation and acceptance
+- Route table updates on both requester and accepter sides
+- Cross-account and cross-region peering support
+- DNS resolution across peered VPCs
+- Multiple peering connections in a single module call
 
-## Usage Patterns
+For more information about this repository and its usage, please see [Terraform AWS VPC Peering Usage Guide](https://github.com/sourcefuse/terraform-aws-arc-vpc-peering/blob/main/docs/module-usage-guide/README.md).
 
+## Quickstart
 ### Simple Same-Account Peering
 
 ```hcl
@@ -56,7 +63,6 @@ module "vpc_peering" {
   }
 }
 ```
-
 ### Cross-Account Peering
 
 ```hcl
@@ -81,7 +87,6 @@ module "vpc_peering" {
   }
 }
 ```
-
 ### Cross-Region Peering
 
 ```hcl
@@ -107,7 +112,6 @@ module "vpc_peering" {
   }
 }
 ```
-
 ### Advanced Multi-Connection with Route Management
 
 ```hcl
@@ -156,7 +160,6 @@ module "vpc_peering" {
   }
 }
 ```
-
 ## Provider Configuration
 
 ### Same Account, Same Region
@@ -206,10 +209,6 @@ The `examples/` directory contains complete, working examples:
 - **[cross-account](./examples/cross-account/)**: Cross-account peering with IAM roles
 - **[cross-region](./examples/cross-region/)**: Cross-region VPC connectivity
 - **[with-routes-dns](./examples/with-routes-dns/)**: Full-featured peering with route management and DNS
-
-## Migration Guide
-
-This module provides a clean, single interface for VPC peering across different scenarios using the `connections` map:
 
 ```hcl
 # Simple same-account peering
@@ -279,16 +278,20 @@ module "vpc_peering" {
 }
 ```
 
-## Security Best Practices
+## Required Inputs
 
-- **Least Privilege**: Only create routes for specific CIDR blocks that need connectivity
-- **Cross-Account IAM**: Ensure proper IAM roles for cross-account peering
-- **Network Segmentation**: Use security groups and NACLs in addition to routing
-- **DNS Resolution**: Only enable when required for your use case
-- **Route Table Management**: Be explicit about which route tables to update
-- **CIDR Planning**: Ensure no overlapping CIDR blocks between peered VPCs
-- **Monitoring**: Set up CloudWatch metrics for peering connection status
-- **Tagging**: Use consistent tagging for cost allocation and management
+| Name | Type | Description |
+|------|------|-------------|
+| `connections` | `map(object)` | Map of peering connection configurations |
+## Key Outputs
+
+| Name | Description |
+|------|-------------|
+| `peering_connection_ids` | Map of peering connection IDs |
+| `peering_connection_statuses` | Map of peering connection statuses |
+## Full Variable & Output Reference
+
+The complete inputs/outputs reference is auto-generated below.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -387,6 +390,10 @@ By specifying this , it will bump the version and if you don't specify this in y
   ```sh
   go test -timeout  30m
   ```
+
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for commit conventions and development setup.
 
 ## Authors
 
